@@ -6,7 +6,7 @@ var cheerio = require('cheerio'),
 var CHAN = '#utdlug',
     bot = new irc.Client('irc.oftc.net', 'lug-bot', {channels: [CHAN]});
 
-bot.addListener('join', function(channel, nick) {
+bot.addListener('join', function (channel, nick) {
   switch (nick) {
     case 'cyanode':
     case 'desmond':
@@ -17,14 +17,14 @@ bot.addListener('join', function(channel, nick) {
   };
 });
 
-bot.addListener('message', function(from, to, msg) {
-  twitter.extractUrls(msg).map(function(url) {
+bot.addListener('message', function (from, to, msg) {
+  twitter.extractUrls(msg).map(function (url) {
     if (url.substring(0, 4) != 'http') {
       url = 'http://' + url;
     };
     
     try {
-      request(url, function(err, res, body) {
+      request(url, function (err, res, body) {
         bot.say(CHAN, cheerio.load(body)('title').text());
       });
     } catch(e) {
