@@ -26,7 +26,7 @@ bot.addListener('message', function(from, to, msg) {
       url = 'http://' + url;
     };
     try {
-      request(urls[i], function(err, res, body) {
+      request(url, function(err, res, body) {
         bot.say(CHAN, cheerio.load(body)('title').text());
       });
     } catch(e) {
