@@ -8,7 +8,7 @@ bot.addListener('join', function(channel, who) {
     case 'phy1729':
     case 'theplague':
     case 'xy86':
-      bot.send('MODE', who, '+o');
+      bot.send('MODE', '#utdlug', '+o', who);
       break;
     default:
       bot.say('#utdlug', 'hi ' + who);
