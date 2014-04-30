@@ -1,7 +1,8 @@
 var cheerio = require('cheerio'), 
     irc = require('irc'),
     request = require('request'),
-    twitter = require('twitter-text');
+    twitter = require('twitter-text'),
+    url = require('url');
 
 var CHAN = '#utdlug',
     bot = new irc.Client('irc.oftc.net', 'lug-bot', {channels: [CHAN]});
@@ -21,7 +22,7 @@ bot.addListener('join', function(channel, nick) {
 bot.addListener('message', function(from, to, msg) {
   var urls = twitter.extractUrls(msg);
   for (var i = 0; i < urls.length; i++) {
-    request(urls[i], function(err, res, body) {
+    request(url.parse(urls[i]), function(err, res, body) {
       bot.say(CHAN, cheerio.load(body)('title').text());
     });
   };
