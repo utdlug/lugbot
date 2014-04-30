@@ -19,7 +19,7 @@ bot.addListener('join', function(channel, nick) {
 });
 
 bot.addListener('message', function(from, to, msg) {
-  urls = twitter.extractUrls(msg);
+  var urls = twitter.extractUrls(msg);
   for (var i = 0; i < urls.length; i++) {
     request(urls[i], function(err, res, body) {
       bot.say(CHAN, cheerio.load(body)('title').text());
