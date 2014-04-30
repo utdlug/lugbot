@@ -20,9 +20,9 @@ bot.addListener('join', function(channel, nick) {
 
 bot.addListener('message', function(from, to, msg) {
   urls = twitter.extractUrls(msg);
-  urls.map(function(url) {
-    request(url, function(err, res, body) {
-      bot.say(CHAN, cheerio.load(body)('title').text());
+  for (var i = 0; i < urls.length; i++) {
+    request(urls[i], function(err, res, body) {
+      bot.say(CHAN, cheerio.load(body)('title').text() + '[' + i + ']');
     });
-  });
+  };
 });
