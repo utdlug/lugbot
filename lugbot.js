@@ -7,12 +7,7 @@ var CHAN = '#utdlug',
     bot = new irc.Client('irc.oftc.net', 'lug-bot', {channels: [CHAN]});
 
 bot.addListener('join', function (channel, nick) {
-  switch (nick) {
-    case 'cyanode':
-    case 'desmond':
-    case 'phy1729':
-    case 'theplague':
-    case 'xy86':
+  if (['cyanode', 'desmond', 'phy1729', 'theplague', 'xy86'].indexOf(nick) != -1) {
       bot.send('MODE', CHAN, '+o', nick);
   };
 });
