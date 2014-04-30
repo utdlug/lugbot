@@ -18,9 +18,7 @@ bot.addListener('join', function(channel, nick) {
 });
 
 bot.addListener('message', function(from, to, msg) {
-  var urls = twitter.extractUrls(msg);
-  for (var i = 0; i < urls.length; i++) {
-    var url = urls[i];
+  twitter.extractUrls(msg).map(function(url) {
     if (url.substring(0, 4) != 'http') {
       url = 'http://' + url;
     };
@@ -32,5 +30,5 @@ bot.addListener('message', function(from, to, msg) {
     } catch(e) {
       console.log(e);
     };
-  };
+  });
 });
