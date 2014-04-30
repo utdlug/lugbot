@@ -22,7 +22,7 @@ bot.addListener('message', function(from, to, msg) {
   var urls = twitter.extractUrls(msg);
   for (var i = 0; i < urls.length; i++) {
     var url = urls[i];
-    if (!url.startswith('http')) {
+    if (url.substring(0, 4) != 'http') {
       url = 'http://' + url;
     };
     try {
