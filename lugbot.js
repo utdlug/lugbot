@@ -1,26 +1,29 @@
-var cheerio = require('cheerio'), 
-    irc = require('irc'),
-    request = require('request'),
-    twitter = require('twitter-text');
+var cheerio = require('cheerio'); 
+var irc = require('irc');
+var Pinboard = require('node-pinboard');
+var request = require('request');
+var twitter = require('twitter-text');
 
-var CHAN = '#utdlug',
-    bot = new irc.Client('irc.oftc.net', 'lug-bot', {channels: [CHAN]});
-
-bot.addListener('join', function (channel, nick) {
-  if (['cyanode', 'desmond', 'phy1729', 'theplague', 'xy86'].indexOf(nick) != -1) {
-      bot.send('MODE', CHAN, '+o', nick);
-  };
-});
+var CHAN = '#utdlug';
+var bot = new irc.Client('irc.oftc.net', 'utdlug', {channels: [CHAN]});
+var pinboard = new Pinboard(process.argv[2]);
 
 bot.addListener('message', function (from, to, msg) {
   twitter.extractUrls(msg).map(function (url) {
-    if (url.substring(0, 4) != 'http') {
-      url = 'http://' + url;
-    };
-    
     try {
+      if (url.substring(0, 4) != 'http') {
+        url = 'http://' + url;
+      };
+    
       request(url, function (err, res, body) {
-        bot.say(CHAN, cheerio.load(body)('title').text());
+        pinboard.add({
+          url: url, 
+          description: cheerio.load(body)('title').text() || url,
+          tags: ['by:' + from].concat(twitter.extractHashtags(msg)).join(','),
+          replace: 'no',
+        }, function (res) {
+          console.log(res)
+        })
       });
     } catch(e) {
       console.log(e);
