@@ -4,7 +4,7 @@ var Pinboard = require('node-pinboard');
 var request = require('request');
 var twitter = require('twitter-text');
 
-var CHAN = '#utdlug';
+var CHAN = '#utdlug' + (process.argv[3] ? 'testing' : '');
 var bot = new irc.Client('irc.oftc.net', 'utdlug', {channels: [CHAN]});
 var pinboard = new Pinboard(process.argv[2]);
 
