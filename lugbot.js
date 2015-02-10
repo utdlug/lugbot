@@ -18,11 +18,11 @@ bot.addListener('message', function(from, to, msg) {
       request(url, function(err, res, body) {
         pinboard.add({
           url: url, 
-          description: cheerio.load(body)('title').text() || url,
+          description: cheerio.load(body || '')('title').text() || url,
           tags: ['by:' + from].concat(twitter.extractHashtags(msg)).join(','),
           replace: 'no',
         }, function(res) {
-          console.log(res)
+          console.log(res);
         })
       });
     } catch(e) {
